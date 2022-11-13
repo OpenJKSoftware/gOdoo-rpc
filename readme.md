@@ -2,11 +2,13 @@
 
 Several Abstraction layers around [OdooRPC](https://odoorpc.readthedocs.io/en/latest/).
 
-Provides Helpers for:
+Made Possible by: [WEMPE Elektronic GmbH](https://wetech.de)
 
-- Login to Odoo
+## Features
+
+- Login to Odoo helper functions
 - Importing Images from the Filesystem
-- Import CSV/Json/Excel Data
+- Import CSV/Json/Excel Data to Odoo via RPC
 - Import res.config.settings
 - import Translations
 - Extend Base.Import feature with Language cols (fieldname:lang:en_US, fieldname:lang:de_DE)
