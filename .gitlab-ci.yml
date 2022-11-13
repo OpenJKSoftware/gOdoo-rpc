@@ -10,12 +10,12 @@ default:
 variables:
   CACHE_KEY: $CI_COMMIT_REF_SLUG
   PY_PACKAGE_PATH: wodoo_rpc
-  BUMP_TARGET:
+  BUMP_VERSION:
     value: ""
     description: Specifies how to Bump the Package version. https://python-poetry.org/docs/cli/#version
   TAG_NOTE:
     value: ""
-    description: Note that will be added to the Release Tag when using BUMP_TARGET
+    description: Note that will be added to the Release Tag when using BUMP_VERSION
 
 cache: &global_cache
   key: "$CACHE_KEY"
@@ -111,7 +111,7 @@ bump version:
   variables:
     GIT_STRATEGY: clone # Ensure we start with a clean Repo here
   rules:
-    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $BUMP_TARGET"
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $BUMP_VERSION"
   before_script:
     - git remote set-url origin "https://gitlab-ci-token:${GITLAB_CI_PUSH_TOKEN}@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
@@ -119,7 +119,7 @@ bump version:
   script:
     - |
       VERSION=$(poetry version --short)
-      poetry version $BUMP_TARGET
+      poetry version $BUMP_VERSION
       BUMPED_VERSION=$(poetry version --short)
     - |
       git add --all
