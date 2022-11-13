@@ -37,7 +37,6 @@ stages:
   - lint
   - test
   - build
-  - publish
 
 poetry:
   stage: prelint
@@ -114,7 +113,7 @@ bump version:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $BUMP_TARGET"
   before_script:
-    - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+    - git remote set-url origin "https://gitlab-ci-token:${GITLAB_CI_PUSH_TOKEN}@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
   script:
@@ -134,24 +133,15 @@ bump version:
     - git push -o ci.skip origin HEAD:$CI_COMMIT_REF_NAME
     - git push origin -o ci.variable="CI_BUILD_AND_PUSH=true" -o ci.variable="CACHE_KEY=$CI_COMMIT_REF_SLUG" --tags
 
-build:
+build_and_push:
   stage: build
-  rules:
-    - if: '$CI_BUILD_AND_PUSH=="true"'
-  script:
-    - poetry build
-  artifacts:
-    paths:
-      - dist/*
-
-publish:
-  stage: publish
-  cache: []
-  variables:
-    PYPI_API_TOKEN: $PYPI_API_TOKEN
   rules:
     - if: '$CI_BUILD_AND_PUSH=="true"'
   before_script:
     - poetry config pypi-token.pypi $PYPI_API_TOKEN
   script:
+    - poetry build
     - poetry publish
+  artifacts:
+    paths:
+      - dist/*
