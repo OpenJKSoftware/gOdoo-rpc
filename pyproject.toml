@@ -6,8 +6,8 @@ authors = ["Joshua Kreuder <joshua_kreuder@outlook.com>"]
 keywords=["odoorpc","odoo"]
 readme="readme.md"
 license="GPL-3"
-homepage="https://gitlab.com/joshuader6/wodoo-rpc"
-repository="https://gitlab.com/joshuader6/wodoo-rpc"
+homepage="https://gitlab.com/jksoftware1/wodoo-rpc"
+repository="https://gitlab.com/jksoftware1/wodoo-rpc"
 include=[
     "LICENSE",
 ]
