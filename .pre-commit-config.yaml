@@ -1,0 +1,57 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-toml
+      - id: check-yaml
+      - id: check-xml
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: debug-statements
+      - id: detect-private-key
+      - id: fix-encoding-pragma
+        args: ["--remove"]
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: poetry run pylint
+        language: system
+        types: [python]
+        args: [
+            "-rn", # Only display messages
+            "-sn", # Don't display the score
+            "--rcfile=.pylintrc",
+          ]
+
+  - repo: local
+    hooks:
+      - id: poetry check
+        name: poetry-check
+        entry: bash -c 'poetry check && poetry lock --check'
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+
+  - repo: https://gitlab.com/pycqa/flake8.git
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: ["--config=setup.cfg"]
+        additional_dependencies:
+          - flake8-black>=0.3.3
+        language_version: python3.8
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort

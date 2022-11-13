@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.183.0/containers/python-3
+{
+  "name": "Wodoo-Rpc",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
+  "containerEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}/src"
+  },
+  "image": "registry.gitlab.com/joshuader6/docker-python:main",
+  "postCreateCommand": "poetry install && poetry run pre-commit install",
+  "remoteUser": "ContainerUser",
+  "mounts": [
+    "source=vscode_cache,target=/home/vscode/.vscode-server,type=volume"
+  ],
+  // vscode Extensions to install in the devcontainer
+  "extensions": [
+    "ms-python.python",
+    "visualstudioexptteam.vscodeintellicode",
+    "ms-python.vscode-pylance",
+    "christian-kohler.path-intellisense",
+    "njpwerner.autodocstring",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "naumovs.color-highlight",
+    "mechatroner.rainbow-csv",
+    "bungcip.better-toml"
+  ]
+}
