@@ -83,7 +83,7 @@ def import_data(
 
     if read_path.is_dir():
         import_files = gather_import_files(datafolder=read_path, regex_pattern=data_regex_comp)
-    elif read_path.suffix == "py":
+    elif read_path.suffix == ".py":
         import_files = [OdooDataset(file=read_path, reference=read_path.stem)]
     elif match := data_regex_comp.match(read_path.name):
         import_files = [OdooDataset(file=read_path, reference=match.group("module"))]
