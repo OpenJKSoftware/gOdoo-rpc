@@ -130,13 +130,13 @@ bump version:
       TAG_NAME="Version-$BUMPED_VERSION"
       echo "Creating Tag '$TAG_NAME' with Message '$TAG_MESSAGE'"
       git tag -a "$TAG_NAME" -m "$TAG_MESSAGE"
-    - git push -o ci.skip origin HEAD:$CI_COMMIT_REF_NAME
-    - git push origin -o ci.variable="CI_BUILD_AND_PUSH=true" -o ci.variable="CACHE_KEY=$CI_COMMIT_REF_SLUG" --tags
+    - git push origin -o ci.variable="CI_BUILD_AND_PUSH=true" HEAD:$CI_COMMIT_REF_NAME
+    - git push origin -o ci.skip --tags
 
 build_and_push:
   stage: build
   rules:
-    - if: '$CI_BUILD_AND_PUSH=="true"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_BUILD_AND_PUSH=="true"'
   before_script:
     - poetry config pypi-token.pypi $PYPI_API_TOKEN
   script:
