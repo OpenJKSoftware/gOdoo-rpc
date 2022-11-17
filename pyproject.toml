@@ -6,8 +6,8 @@ authors = ["Joshua Kreuder <joshua_kreuder@outlook.com>"]
 keywords=["odoorpc","odoo"]
 readme="readme.md"
 license="LGPL-3"
-homepage="https://gitlab.com/jksoftware1/wodoo-rpc"
-repository="https://gitlab.com/jksoftware1/wodoo-rpc"
+homepage="https://gitlab.com/open-jk-soft/wodoo-rpc"
+repository="https://gitlab.com/open-jk-soft/wodoo-rpc"
 include=[
     "LICENSE",
 ]
@@ -21,7 +21,7 @@ OdooRPC = "^0.8.0"
 requests = "^2.25.1"
 python-dotenv = "^0.20.0"
 openpyxl = "^3.0.10"
-wodoo-datalib = "^0.0.1"
+wodoo-datalib = "^0.0.4"
 pylint-gitlab = "^1.1.0"
 
 [tool.poetry.dev-dependencies]

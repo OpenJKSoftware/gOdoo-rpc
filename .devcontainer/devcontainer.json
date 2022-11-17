@@ -4,7 +4,7 @@
   "name": "Wodoo-Rpc",
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
-  "image": "registry.gitlab.com/jksoftware1/docker-python:3.8",
+  "image": "registry.gitlab.com/open-jk-soft/docker-python:3.8",
   "postCreateCommand": "poetry install && poetry run pre-commit install",
   "remoteUser": "ContainerUser",
   "mounts": [
