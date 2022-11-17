@@ -1,5 +1,5 @@
 """Wodoo-rpc."""
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 from . import odoo2odoo_mapper  # noqa
 from .api import OdooApiWrapper  # noqa
 from .file_2_odoo import import_data, import_dataset  # noqa
