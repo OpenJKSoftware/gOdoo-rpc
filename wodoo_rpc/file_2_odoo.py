@@ -45,10 +45,10 @@ def gather_import_files(datafolder: Path, regex_pattern: Pattern[str]) -> List[O
     return out_list
 
 
-def import_folder(
+def import_data(
     read_path: Path,
-    data_regex: Pattern[str],
-    product_image_regex: Pattern[str],
+    data_regex: str,
+    product_image_regex: str,
     odoo_api: OdooApiWrapper,
     skip_existing_ids: bool = False,
     check_dataset_timestamp: bool = False,
@@ -79,11 +79,13 @@ def import_folder(
     NameError
         When the filename couldnt be parsed
     """
-    data_regex = re.compile(data_regex) if isinstance(data_regex, str) else data_regex
+    data_regex_comp = re.compile(data_regex)
 
     if read_path.is_dir():
-        import_files = gather_import_files(datafolder=read_path, regex_pattern=data_regex)
-    elif match := data_regex.match(read_path.name):
+        import_files = gather_import_files(datafolder=read_path, regex_pattern=data_regex_comp)
+    elif read_path.suffix == "py":
+        import_files = [OdooDataset(file=read_path, reference=read_path.stem)]
+    elif match := data_regex_comp.match(read_path.name):
         import_files = [OdooDataset(file=read_path, reference=match.group("module"))]
     else:
         raise NameError(f"Couldnt Parse: {read_path.name}")
@@ -99,8 +101,9 @@ def import_folder(
             import_dataset(data=data, odoo_api=odoo_api, skip_existing_ids=skip_existing_ids)
 
     if product_image_regex:
-        product_image_regex = (
-            re.compile(product_image_regex) if isinstance(product_image_regex, str) else product_image_regex
+        product_image_regex_comp = re.compile(product_image_regex)
+
+        image_files = odoo_api.image_importer.search_images_by_regex(
+            read_path / "img", product_image_regex_comp.pattern
         )
-        image_files = odoo_api.image_importer.search_images_by_regex(read_path / "img", product_image_regex.pattern)
         odoo_api.image_importer.import_product_images(image_files, overwrite_images=not skip_existing_ids)
