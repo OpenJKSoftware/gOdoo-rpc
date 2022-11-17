@@ -48,7 +48,7 @@ def gather_import_files(datafolder: Path, regex_pattern: Pattern[str]) -> List[O
 def import_folder(
     read_path: Path,
     data_regex: Pattern[str],
-    image_regex: Pattern[str],
+    product_image_regex: Pattern[str],
     odoo_api: OdooApiWrapper,
     skip_existing_ids: bool = False,
     check_dataset_timestamp: bool = False,
@@ -65,7 +65,7 @@ def import_folder(
         Folder to search for files or file to import
     data_regex : re.Pattern[str]
         Regex for Datafiles. Needs Group "Module"
-    image_regex : re.Pattern[str]
+    product_image_regex : re.Pattern[str]
         Regex for Image files. Example: (?P<default_code>\d{6})\.(jpeg|png|jpg)
     odoo_api : OdooApiWrapper
         logged in Odoo Api Instance
@@ -80,7 +80,7 @@ def import_folder(
         When the filename couldnt be parsed
     """
     data_regex = re.compile(data_regex) if isinstance(data_regex, str) else data_regex
-    image_regex = re.compile(image_regex) if isinstance(image_regex, str) else image_regex
+
     if read_path.is_dir():
         import_files = gather_import_files(datafolder=read_path, regex_pattern=data_regex)
     elif match := data_regex.match(read_path.name):
@@ -98,5 +98,9 @@ def import_folder(
         else:
             import_dataset(data=data, odoo_api=odoo_api, skip_existing_ids=skip_existing_ids)
 
-    image_files = odoo_api.image_importer.search_images_by_regex(read_path / "img", image_regex.pattern)
-    odoo_api.image_importer.import_product_images(image_files, overwrite_images=not skip_existing_ids)
+    if product_image_regex:
+        product_image_regex = (
+            re.compile(product_image_regex) if isinstance(product_image_regex, str) else product_image_regex
+        )
+        image_files = odoo_api.image_importer.search_images_by_regex(read_path / "img", product_image_regex.pattern)
+        odoo_api.image_importer.import_product_images(image_files, overwrite_images=not skip_existing_ids)

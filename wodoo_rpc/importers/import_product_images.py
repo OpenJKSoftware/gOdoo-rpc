@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Match, Tuple
 
+from odoorpc.error import RPCError
 from odoorpc.models import Model
 
 from ..helpers import OdooImporter
@@ -25,10 +26,18 @@ class OdooImageImporter(OdooImporter):
         overwrite_images : bool
             Wether Existing images should be overwritten
         """
-        product_ids = tuple(v[0] for v in images)
-        logger.info("Querying Odoo with %s product IDs", len(product_ids))
+        if not images:
+            logger.debug("Skipping Product image Import. No Images Provided")
+            return
 
-        products_model: Model = self.session.env["product.product"]
+        product_ids = tuple(v[0] for v in images)
+        try:
+            products_model: Model = self.session.env["product.product"]
+        except RPCError:
+            logger.warning("Cannot import Product images. Model product.product not found")
+            return
+
+        logger.info("Querying Odoo with %s product IDs", len(product_ids))
 
         prod_ids = products_model.search([("default_code", "in", product_ids)])
         if not overwrite_images:
