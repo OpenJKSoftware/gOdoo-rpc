@@ -26,7 +26,6 @@ repos:
         args: [
             "-rn", # Only display messages
             "-sn", # Don't display the score
-            "--rcfile=.pylintrc",
           ]
 
   - repo: local
@@ -42,7 +41,7 @@ repos:
     hooks:
       - id: black
 
-  - repo: https://gitlab.com/pycqa/flake8.git
+  - repo: https://github.com/pycqa/flake8
     rev: 3.9.2
     hooks:
       - id: flake8
