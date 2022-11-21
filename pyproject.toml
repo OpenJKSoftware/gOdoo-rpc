@@ -12,8 +12,7 @@ include=[
     "LICENSE",
 ]
 
-
-[tool.poetry_bumpversion.file."wodoo_rpc/__init__.py"]
+[tool.poetry_bumpversion.file."src/godoo_rpc/__init__.py"]
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11"
@@ -44,6 +43,9 @@ types-requests = "^2.28.2"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
 [tool.black]
 line-length = 120
 
@@ -62,6 +64,7 @@ no-docstring-rgx="^(?!__init__$)_"
 [tool.pylint.master]
 jobs=0
 persistent=true
+init-hook='import sys; sys.path.append("src")'
 
 [tool.pylint.'MESSAGES CONTROL']
 disable="superfluous-parens,too-few-public-methods,too-many-arguments"
