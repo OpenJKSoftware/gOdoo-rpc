@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 import odoorpc
 import requests
 from dotenv import load_dotenv
-from wodoo_datalib import ensure_env_var
+from j_pandas_datalib import ensure_env_var
 
 from .api import OdooApiWrapper
 

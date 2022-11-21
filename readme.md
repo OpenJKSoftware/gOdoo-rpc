@@ -1,4 +1,4 @@
-# Wodoo-RPC
+# gOdoo-RPC
 
 Several Abstraction layers around [OdooRPC](https://odoorpc.readthedocs.io/en/latest/).
 
@@ -20,14 +20,9 @@ Made Possible by: [WEMPE Elektronic GmbH](https://wetech.de)
 
 This workspace contains a [Vscode devcontainer](https://code.visualstudio.com/docs/remote/containers).
 
-## Gitlab Release
+### Bump / Release Version
 
-There are 2 Ways to start a release Pipeline:
-
-1. Via gitlab UI
-   1. Create new Pipeline in CI View
-   2. Supply Variables "`BUMP_VERSION`" [Valid Values](https://python-poetry.org/docs/cli/#version) and optional "`TAG_NOTE`" to add a text to the Git Tag.
-   3. Profit
-2. Via Git while Pushing
-   - Publish a path release: `git push -o ci.variable="BUMP_VERSION=patch"`
-   - Major release with release comment `git push -o ci.variable="BUMP_VERSION=patch" -o ci.variable="TAG_NOTE=This is a super cool new version"`
+- Trigger [Version Bump](https://github.com/OpenJKSoftware/gOdoo-rpc/actions/workflows/version-bump.yml) pipeline with appropriate target.
+- Merge the created PullRequest. Name: `:shipit: Bump to Version: <versionnumber>`
+- This will create a Tag on `main`
+- Create a release from this Tag. A Pipeline will automatically push to [Pypi](https://pypi.org/project/gOdoo-rpc/)

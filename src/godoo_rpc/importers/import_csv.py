@@ -3,8 +3,8 @@
 import logging
 from pathlib import Path
 
+from j_pandas_datalib import pandas_read_csv
 from odoorpc import ODOO
-from wodoo_datalib import pandas_read_csv
 
 from ..helpers import OdooImporter
 from .import_data import OdooDataImporter

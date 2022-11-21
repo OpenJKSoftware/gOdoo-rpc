@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 import pandas as pd
-from wodoo_datalib import Dataset
+from j_pandas_datalib import Dataset
 
 from .api import OdooApiWrapper
 
@@ -229,7 +229,7 @@ def import_dataset_timestamped(
 
     continue_import = True
     import_ref = dataset.file.relative_to(relative_folder)
-    odoo_ref_name = "wodoo_rpc_import_cache"
+    odoo_ref_name = "godoo_rpc_import_cache"
     change_date_fs = datetime.fromtimestamp(dataset.file.stat().st_mtime)
 
     import_ref_search = paramteter_model.search([("key", "=", odoo_ref_name)])

@@ -1,4 +1,4 @@
-"""Wodoo-rpc."""
+"""gOdoo-rpc."""
 __version__ = "0.0.1"
 from . import odoo2odoo_mapper  # noqa
 from .api import OdooApiWrapper  # noqa
