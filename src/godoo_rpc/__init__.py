@@ -1,5 +1,5 @@
 """gOdoo-rpc."""
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 from . import odoo2odoo_mapper  # noqa
 from .api import OdooApiWrapper  # noqa
 from .file_2_odoo import import_data, import_dataset  # noqa
