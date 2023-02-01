@@ -4,7 +4,7 @@
   "name": "gOdoo-rpc",
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
-  "image": "ghcr.io/openjksoftware/python-devcontainer:3.8",
+  "image": "ghcr.io/openjksoftware/python-devcontainer:3.11",
   "postCreateCommand": "poetry install && poetry run pre-commit install",
   "remoteUser": "ContainerUser",
   "mounts": [
