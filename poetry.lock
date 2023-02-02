@@ -761,14 +761,14 @@ files = [
 
 [[package]]
 name = "odoorpc"
-version = "0.8.0"
+version = "0.9.0"
 description = "OdooRPC is a Python package providing an easy way to pilot your Odoo servers through RPC."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "OdooRPC-0.8.0-py2.py3-none-any.whl", hash = "sha256:abd8fa8385da635ac4848e9a8944c01929c0606cb99743d7b8f2e887800e84e3"},
-    {file = "OdooRPC-0.8.0.tar.gz", hash = "sha256:e90b6315805070fadbe6ced5c3891558216a02a475f0d8882700d219c3f34188"},
+    {file = "OdooRPC-0.9.0-py2.py3-none-any.whl", hash = "sha256:95a0d40c94c76a097870379a411180f81da164917a27d891a935894105f46704"},
+    {file = "OdooRPC-0.9.0.tar.gz", hash = "sha256:936adc52871b4c9d6b921c73421acd88f73442b17a71a49f34de6dbcf54d7964"},
 ]
 
 [[package]]
@@ -1441,4 +1441,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.12"
-content-hash = "647fdb64e694af011fdcf3ec3d7071c18f0e398b6c89facd0555cc4ecb0f925e"
+content-hash = "58febbddd2e47b3d289c1ac731dee322f5f5161b3f492cf90e28d0ea2abc8b66"
