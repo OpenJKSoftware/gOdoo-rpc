@@ -1,27 +1,31 @@
 {
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/godoo-rpc",
   "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
   "image": "ghcr.io/openjksoftware/python-devcontainer:3.11",
-  "postCreateCommand": "poetry config virtualenvs.in-project true && poetry install && poetry run pre-commit install",
+  "postCreateCommand": "poetry install && pre-commit install",
   "remoteUser": "ContainerUser",
   "mounts": [
     "source=vscode_cache,target=/home/vscode/.vscode-server,type=volume"
   ],
   // vscode Extensions to install in the devcontainer
-  "extensions": [
-    "ms-python.python",
-    "visualstudioexptteam.vscodeintellicode",
-    "ms-python.vscode-pylance",
-    "christian-kohler.path-intellisense",
-    "njpwerner.autodocstring",
-    "eamodio.gitlens",
-    "esbenp.prettier-vscode",
-    "naumovs.color-highlight",
-    "mechatroner.rainbow-csv",
-    "bungcip.better-toml"
-  ],
-  "settings": {
-    "python.defaultInterpreterPath": ".venv/bin/python",
-    "python.formatting.provider": "black"
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "visualstudioexptteam.vscodeintellicode",
+        "ms-python.vscode-pylance",
+        "christian-kohler.path-intellisense",
+        "njpwerner.autodocstring",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "naumovs.color-highlight",
+        "mechatroner.rainbow-csv",
+        "bungcip.better-toml",
+        "ritwickdey.LiveServer"
+      ],
+      "settings": {
+        "python.formatting.provider": "black"
+      }
+    }
   }
 }

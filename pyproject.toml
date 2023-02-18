@@ -23,8 +23,11 @@ openpyxl = "^3.0.10"
 pylint-gitlab = "^1.1.0"
 j-pandas-datalib = "^0.1.0"
 
+[tool.poetry.group.dev.dependencies]
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
+pytest-cov = "^4.0.0"
+pytest-github-actions-annotate-failures = "^0.1.8"
 pre-commit = "^2.20.0"
 isort = "^5.12.0"
 black = "^22.6.0"
