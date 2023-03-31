@@ -33,35 +33,33 @@ repos:
         language: system
         types: [python]
 
-  - repo: local
-    hooks:
       - id: poetry check
         name: poetry-check
         entry: bash -c 'poetry check && poetry lock --check'
         language: system
         pass_filenames: false
 
-  - repo: https://github.com/psf/black
-    rev: 23.1.0
-    hooks:
-      - id: black
-        args: ["--line-length", "120"]
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
-        args: ["--config=setup.cfg"]
-        additional_dependencies:
-          - flake8-black>=0.3.3
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.1.1
-    hooks:
       - id: mypy
-        exclude: ^tests/
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        types: [python]
+        exclude: "^tests/"
+
+      - id: black
+        name: black
+        entry: poetry run black
+        language: system
+        types: ["python"]
+
+      - id: flake8
+        name: flake8
+        entry: poetry run flake8
+        language: system
+        types: ["python"]
+
+      - id: isort
+        name: isort
+        entry: poetry run isort
+        language: system
+        types: ["python"]
