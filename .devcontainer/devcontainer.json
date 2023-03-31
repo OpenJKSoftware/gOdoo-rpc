@@ -22,7 +22,10 @@
         "mechatroner.rainbow-csv",
         "bungcip.better-toml",
         "ritwickdey.LiveServer"
-      ]
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/poetry-venv/bin/python"
+      }
     }
   }
 }
