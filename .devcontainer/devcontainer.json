@@ -22,10 +22,7 @@
         "mechatroner.rainbow-csv",
         "bungcip.better-toml",
         "ritwickdey.LiveServer"
-      ],
-      "settings": {
-        "python.formatting.provider": "black"
-      }
+      ]
     }
   }
 }
