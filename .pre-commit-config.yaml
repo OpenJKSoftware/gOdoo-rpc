@@ -29,7 +29,7 @@ repos:
           ]
       - id: pytest
         name: pytest
-        entry: pytest src/tests --exitfirst --failed-first -cov=src
+        entry: poetry run pytest src/tests --exitfirst --failed-first -cov=src
         language: system
         types: [python]
 

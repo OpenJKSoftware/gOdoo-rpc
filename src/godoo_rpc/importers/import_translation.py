@@ -5,9 +5,9 @@ import logging
 import pandas as pd
 from odoorpc.models import Model
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class OdooTranslationImporter(OdooImporter):
@@ -25,7 +25,7 @@ class OdooTranslationImporter(OdooImporter):
         """
         dataframe = dataframe.set_index("id")
         for index, (odoo_id, row) in enumerate(dataframe.iterrows(), 1):
-            logger.info("Importing Translations into Odoo (%s/%s) ", index, len(dataframe))
+            LOGGER.info("Importing Translations into Odoo (%s/%s) ", index, len(dataframe))
             odoo_item: Model = self.session.env.ref(odoo_id)
             if odoo_item:
                 for col in dataframe.columns:

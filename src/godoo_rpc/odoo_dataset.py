@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import Any, Dict
 
 import pandas as pd
-from j_pandas_datalib import Dataset
 
 from .api import OdooApiWrapper
+from .helpers.pandas.dataset import Dataset
 
 FOLDER_REGEX = re.compile(r"(\d+)_.*")
 

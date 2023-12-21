@@ -3,13 +3,13 @@
 import logging
 from pathlib import Path
 
-from j_pandas_datalib import pandas_read_csv
 from odoorpc import ODOO
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
+from ..helpers.pandas.read import pandas_read_csv
 from .import_data import OdooDataImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class OdooCsvImporter(OdooImporter):

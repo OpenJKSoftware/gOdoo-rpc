@@ -6,9 +6,9 @@ from typing import Any, Dict, Iterable, List, Optional, Union
 
 from odoorpc.models import Model
 
-from .helpers import get_rec_meta, mapped_rpc
+from .helpers.rpc import get_rec_meta, mapped_rpc
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 def map_record_value(

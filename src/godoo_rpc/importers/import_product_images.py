@@ -8,9 +8,9 @@ from typing import Dict, List, Match, Tuple
 from odoorpc.error import RPCError
 from odoorpc.models import Model
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class OdooImageImporter(OdooImporter):
@@ -27,17 +27,17 @@ class OdooImageImporter(OdooImporter):
             Wether Existing images should be overwritten
         """
         if not images:
-            logger.debug("Skipping Product image Import. No Images Provided")
+            LOGGER.debug("Skipping Product image Import. No Images Provided")
             return
 
         product_ids = tuple(v[0] for v in images)
         try:
             products_model: Model = self.session.env["product.product"]
         except RPCError:
-            logger.warning("Cannot import Product images. Model product.product not found")
+            LOGGER.warning("Cannot import Product images. Model product.product not found")
             return
 
-        logger.info("Querying Odoo with %s product IDs", len(product_ids))
+        LOGGER.info("Querying Odoo with %s product IDs", len(product_ids))
 
         prod_ids = products_model.search([("default_code", "in", product_ids)])
         if not overwrite_images:
@@ -49,22 +49,22 @@ class OdooImageImporter(OdooImporter):
                 ],
                 fields=["res_id"],
             )
-            logger.debug("Filtering %s products that already have an image", len(existing_images))
+            LOGGER.debug("Filtering %s products that already have an image", len(existing_images))
             existing_image_ids = [x["res_id"] for x in existing_images]
             prod_ids = [i for i in prod_ids if i not in existing_image_ids]
 
         if not prod_ids:
             return
 
-        logger.info("Getting %s Products from Odoo", len(prod_ids))
+        LOGGER.info("Getting %s Products from Odoo", len(prod_ids))
         for index, prod_id in enumerate(prod_ids, 1):
             prod = products_model.browse([prod_id])
             dcode = prod.default_code
-            logger.debug("Searching images for %s", dcode)
+            LOGGER.debug("Searching images for %s", dcode)
             match_images = [v[1] for v in images if v[0] == dcode]
             if match_images:
                 selected_img = match_images[0]
-                logger.info(
+                LOGGER.info(
                     "(%s/%s) Setting Product image for '%s' --> '%s'", index, len(prod_ids), dcode, selected_img
                 )
                 img_b64 = base64.b64encode(selected_img.open("rb").read()).decode("utf-8")
@@ -85,10 +85,10 @@ class OdooImageImporter(OdooImporter):
         Dict[re.Match[str], Path]
             dict of regex match and file
         """
-        logger.info("Searching Product images in '%s' Regex: '%s'", root_folder, regex_pattern)
+        LOGGER.info("Searching Product images in '%s' Regex: '%s'", root_folder, regex_pattern)
         regex = re.compile(regex_pattern)
         images = {f_match: f for f in root_folder.rglob("*") if (f_match := regex.match(f.name))}
-        logger.debug("Found %s images", len(images))
+        LOGGER.debug("Found %s images", len(images))
         return images
 
     def search_images_by_regex(self, image_path: Path, regex_pattern: str) -> List[Tuple[str, Path]]:

@@ -1,22 +1,7 @@
 """Helper Methods for Odoo."""
 from typing import Any, Callable, Collection, Literal, Union
 
-from odoorpc import ODOO
 from odoorpc.models import Model
-
-
-class OdooImporter:
-    """Base Class for Odooimporters."""
-
-    def __init__(self, session: ODOO) -> None:
-        """Initialize OdooImporter.
-
-        Parameters
-        ----------
-        session : ODOO
-            Odoo Session
-        """
-        self.session = session
 
 
 def build_odoo_domain_from_tuples(

@@ -5,9 +5,9 @@ from typing import Any, Dict, List
 
 from odoorpc.models import Model
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class OdooSettingsImporter(OdooImporter):
@@ -30,13 +30,13 @@ class OdooSettingsImporter(OdooImporter):
                 settings[setting] = self.session.env.ref(value).id
 
         if lang:
-            logger.info("Odoo preparing to set %s settings for language: %s", len(settings), lang)
+            LOGGER.info("Odoo preparing to set %s settings for language: %s", len(settings), lang)
             odoo_settings_id = settings_env.with_context(lang=lang).create([settings])
         else:
-            logger.info("Odoo preparing to set %s settings", len(settings))
+            LOGGER.info("Odoo preparing to set %s settings", len(settings))
             odoo_settings_id = settings_env.create([settings])
 
-        logger.info("Committing %s Settings to Odoo", len(settings))
+        LOGGER.info("Committing %s Settings to Odoo", len(settings))
         settings_env.execute(odoo_settings_id)  # Commit settings to Odoo
 
     def install_modules(self, modules: List[str]) -> None:
@@ -49,9 +49,9 @@ class OdooSettingsImporter(OdooImporter):
         """
         odoo_module_env: Model = self.session.env["ir.module.module"]
         odoo_module_env.update_list()
-        logger.info("Installing %s Odoo Modules", len(modules))
+        LOGGER.info("Installing %s Odoo Modules", len(modules))
         for index, module in enumerate(modules, 1):
             module_id = odoo_module_env.search([("state", "!=", "installed"), ("name", "=", module)])
             if module_id:
-                logger.info("Odoo Installing Module (%s/%s): %s", index, len(modules), module)
+                LOGGER.info("Odoo Installing Module (%s/%s): %s", index, len(modules), module)
                 odoo_module_env.browse(module_id).button_immediate_install()

@@ -15,19 +15,18 @@ include=[
 [tool.poetry_bumpversion.file."src/godoo_rpc/__init__.py"]
 
 [tool.poetry.dependencies]
-python = "^3.8.1,<3.12"
+python = "^3.9,<3.13"
 OdooRPC = "^0.9.0"
 requests = "^2.25.1"
 python-dotenv = "^0.20.0"
 openpyxl = "^3.0.10"
 pylint-gitlab = "^1.1.0"
-j-pandas-datalib = "^0.1.0"
+pandas = "^2.1.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.1.2"
 pytest-cov = "^4.0.0"
 pytest-github-actions-annotate-failures = "^0.1.8"
-pre-commit = "^2.20.0"
 isort = "^5.12.0"
 black = "^22.6.0"
 mypy = "^0.991"

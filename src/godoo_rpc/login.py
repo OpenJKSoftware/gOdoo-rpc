@@ -8,9 +8,9 @@ from urllib.parse import urlparse
 import odoorpc
 import requests
 from dotenv import load_dotenv
-from j_pandas_datalib import ensure_env_var
 
 from .api import OdooApiWrapper
+from .helpers.env import ensure_env_var
 
 logger = logging.getLogger(__name__)
 

@@ -10,12 +10,12 @@ import pandas as pd
 from odoorpc import ODOO
 from openpyxl import Workbook, load_workbook
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
 from .import_data import OdooDataImporter
 from .import_settings import OdooSettingsImporter
 from .import_translation import OdooTranslationImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class OdooXLImporter(OdooImporter):
@@ -72,7 +72,7 @@ class OdooXLImporter(OdooImporter):
         importer = OdooDataImporter(session=self.session)
         for index, (match, sheet) in enumerate(import_sheets.items(), 1):
             odoo_model = match.group("model")
-            logger.info(
+            LOGGER.info(
                 "(%s/%s) Importing Worksheet: %s into Module %s", index, len(import_sheets), sheet.title, odoo_model
             )
             sheet_data = pd.read_excel(str(self.path.resolve()), sheet.title)

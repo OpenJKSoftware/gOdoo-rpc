@@ -13,9 +13,9 @@ import pandas as pd
 from odoorpc import ODOO
 from odoorpc.models import Model
 
-from ..helpers import OdooImporter
+from ..helpers.importer import OdooImporter
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 LANG_COL_REGEX = re.compile(r"(?P<col>.*):lang:(?P<lang>.*)")
 
 
@@ -114,7 +114,7 @@ def chunk_odoo_import(full_data: pd.DataFrame, chunk_size: int) -> List[pd.DataF
     if len(full_data) <= chunk_size:
         return [full_data]
 
-    logger.debug("Chunking Dataset with %s Entries to size %s", len(full_data), chunk_size)
+    LOGGER.debug("Chunking Dataset with %s Entries to size %s", len(full_data), chunk_size)
     chunk_count = -(-len(full_data) // chunk_size)  # Round Number of slices up
     chunks: List[pd.DataFrame] = np.array_split(full_data, chunk_count)  # type: ignore
     out_chunks: List[pd.DataFrame] = [chunks.pop(0)]  # Remove First Chunk and add to Output
@@ -134,13 +134,13 @@ def chunk_odoo_import(full_data: pd.DataFrame, chunk_size: int) -> List[pd.DataF
 
         move_rows_count = np.where(~empty_ids)[0][0]  # Get index of first Non empty Id.
 
-        logger.debug("(%s/%s) Move %s rows to Previous Chunk", index + 1, len(chunks), move_rows_count)
+        LOGGER.debug("(%s/%s) Move %s rows to Previous Chunk", index + 1, len(chunks), move_rows_count)
         move_rows = chunk.iloc[0:move_rows_count]
         out_chunks[-1] = out_chunks[-1].append(move_rows)  # type: ignore
         if not (out_chunk := chunk.drop(list(move_rows.index))).empty:
             out_chunks.append(out_chunk)
 
-    logger.info("Dataframe with len %s chunked into %s parts", len(full_data), len(out_chunks))
+    LOGGER.info("Dataframe with len %s chunked into %s parts", len(full_data), len(out_chunks))
     return out_chunks
 
 
@@ -214,9 +214,9 @@ class OdooDataImporter(OdooImporter):
         lang_pairs = dataframe_generate_lang_pairs(dataframe=dataframe)
         if not lang_pairs:
             return
-        logger.info("Found: %s Language Columns", len(lang_pairs))
+        LOGGER.info("Found: %s Language Columns", len(lang_pairs))
         for index, pair in enumerate(lang_pairs, 1):
-            logger.info("(%s/%s) Processing Language %s, Col: %s", index, len(lang_pairs), pair.lang, pair.val_col)
+            LOGGER.info("(%s/%s) Processing Language %s, Col: %s", index, len(lang_pairs), pair.lang, pair.val_col)
             for _, row in dataframe.iterrows():
                 if pd.notna(row[pair.val_col]):
                     odoo_rec: Model = self.session.env.ref(row[pair.id_col])
@@ -284,20 +284,20 @@ class OdooDataImporter(OdooImporter):
         self._model_name = model_name
         self._max_batch_size = max_batch_size if max_batch_size > 0 else len(dataframe)
 
-        logger.info("Staring Import from '%s' to '%s'", self._source, self._model_name)
+        LOGGER.info("Staring Import from '%s' to '%s'", self._source, self._model_name)
         if dataframe.empty:
-            logger.error("Cant import %s. No Data Provided", self._source)
+            LOGGER.error("Cant import %s. No Data Provided", self._source)
             return
 
         if (dupe_mask := dataframe["id"].replace("", np.nan).dropna().duplicated()).any():
             dupes = dataframe.dropna(subset=["id"]).loc[dupe_mask, "id"]
-            logger.error("Detetced duplicate Ids in %s. Dupes: %s", self._source, dupes)
+            LOGGER.error("Detetced duplicate Ids in %s. Dupes: %s", self._source, dupes)
             raise IndexError(f"Detedced duplicate Ids in {self._source}. Dupes:\n{dupes}")
 
         if skip_existing_ids:
             dataframe = self._strip_existing_records(dataframe)
             if dataframe.empty:
-                logger.info("All IDs in Dataframe already exist in Odoo")
+                LOGGER.info("All IDs in Dataframe already exist in Odoo")
                 return
 
         dataframe = dataframe.loc[:, ~dataframe.columns.str.contains("^Unnamed")]
@@ -316,7 +316,7 @@ class OdooDataImporter(OdooImporter):
         no_empty_rows = no_lang_df.dropna(how="all", axis=0)
         chunks = chunk_odoo_import(no_empty_rows, self._max_batch_size)
         for index, chunk in enumerate(chunks, 1):
-            logger.info(
+            LOGGER.info(
                 "(%s/%s) Importing %s records from '%s' into Odoo", index, len(chunks), len(chunk), self._source
             )
             self._upload(chunk, index)
@@ -343,7 +343,7 @@ class OdooDataImporter(OdooImporter):
                 "file_name": self._source + f"-{index}",
             }
         )
-        logger.debug("Odoo: Created 'base.import' model with id : %s", imp_id)
+        LOGGER.debug("Odoo: Created 'base.import' model with id : %s", imp_id)
         imp = odoo_model.browse(imp_id)
 
         headers = list(dataset.columns.values)
@@ -370,7 +370,7 @@ class OdooDataImporter(OdooImporter):
 
         expect_len = len(dataset["id"].dropna().unique())
         if len(resp["ids"]) != expect_len:
-            logger.error("Expected %s, Records to be imported, but odoo only reports %s", expect_len, len(resp["ids"]))
+            LOGGER.error("Expected %s, Records to be imported, but odoo only reports %s", expect_len, len(resp["ids"]))
 
     def handle_upload_errors(self, messages: List[Dict[str, Any]], dataset: pd.DataFrame) -> None:
         """Handle Error Messages.
@@ -387,7 +387,7 @@ class OdooDataImporter(OdooImporter):
         ImportError
             If an error Occured
         """
-        logger.error("Odoo Import Failed with message:\n%s", json.dumps(messages, sort_keys=True, indent=2))
+        LOGGER.error("Odoo Import Failed with message:\n%s", json.dumps(messages, sort_keys=True, indent=2))
         messages = [m for m in messages if "rows" in m]
         affected_row_pairs = [(int(m["rows"]["from"]), int(m["rows"]["to"])) for m in messages]
         affected_rows = [row for lower, upper in affected_row_pairs for row in range(lower, upper + 1)]
@@ -405,5 +405,5 @@ class OdooDataImporter(OdooImporter):
 
         err_df = err_df[[c for c in err_df.columns if c in affected_cols]]  # Looks weird, but preserves DF Col Order
         with pd.option_context("display.max_rows", None, "display.max_columns", None):  # type: ignore
-            logger.error("Relevant Dataset:\n%s", err_df)
+            LOGGER.error("Relevant Dataset:\n%s", err_df)
         raise ImportError("Odoo Responded with errors. See log.")
