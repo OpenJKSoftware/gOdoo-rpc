@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "godoo-rpc"
-version = "0.1.3"
+version = "0.1.4"
 description = "Helper Functions around OdooRPC"
 authors = ["Joshua Kreuder <joshua_kreuder@outlook.com>"]
 keywords = ["odoorpc", "odoo"]
