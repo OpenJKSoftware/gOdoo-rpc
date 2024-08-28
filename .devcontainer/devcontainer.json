@@ -1,8 +1,8 @@
 {
   "workspaceFolder": "/godoo-rpc",
   "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
-  "image": "ghcr.io/openjksoftware/python-devcontainer:3.11",
-  "postCreateCommand": "poetry install && pip install pre-commit && pre-commit install",
+  "image": "ghcr.io/openjksoftware/python-devcontainer:3.9",
+  "postCreateCommand": "poetry config virtualenvs.in-project true && poetry install && pip install pre-commit && pre-commit install --install-hooks",
   "remoteUser": "ContainerUser",
   "mounts": [
     "source=vscode_cache,target=/home/vscode/.vscode-server,type=volume"
@@ -20,7 +20,7 @@
         "esbenp.prettier-vscode",
         "naumovs.color-highlight",
         "mechatroner.rainbow-csv",
-        "bungcip.better-toml",
+        "tamasfe.even-better-toml",
         "ritwickdey.LiveServer",
         "seatonjiang.gitmoji-vscode",
         "ms-python.isort",
@@ -28,7 +28,7 @@
         "ms-python.pylint"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/opt/poetry-venv/bin/python"
+        "python.defaultInterpreterPath": ".venv/bin/python"
       }
     }
   }
